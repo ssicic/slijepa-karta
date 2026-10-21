@@ -1,0 +1,108 @@
+/* Look: an old school atlas. Paper, ink, serif type, hatched neighbours. */
+:root {
+  --paper: #f3ead3;
+  --ink: #2b2620;
+  --ink-soft: #6b5f4f;
+  --rule: #b9a98a;
+  --sea: #b9d0cc;
+  --land: #f1e0b0;
+  --land-stroke: #5a4a33;
+  --red: #b5361f;
+  --river: #2d5f8a;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; color: var(--ink); font: 17px/1.45 var(--serif); background: var(--paper); }
+body { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+.hidden { display: none !important; }
+
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+.btn { padding: 10px 18px; border: 1.5px solid var(--ink); background: var(--ink); color: var(--paper); }
+.btn-outline { padding: 10px 18px; border: 1.5px solid var(--ink); }
+.btn:active, .btn-outline:active, #campaign:active { transform: translateY(1px); }
+
+/* ---------- home ---------- */
+.screen { max-width: 520px; margin: 0 auto; padding: 40px 20px 24px; display: flex; flex-direction: column; }
+#game.screen { max-width: none; height: 100%; padding: 0; }
+
+.eyebrow { font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { margin: 6px 0 0; font-size: 46px; line-height: 1; font-weight: 400; letter-spacing: -.01em; }
+.sub { margin: 12px 0 0; color: var(--ink-soft); font-style: italic; }
+.rule { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); padding-top: 3px; margin: 24px 0; }
+
+#main-game, #campaign { display: block; width: 100%; text-align: left; padding: 14px 16px; border: 1.5px solid var(--ink); }
+#main-game { background: var(--ink); color: var(--paper); }
+#campaign { margin-bottom: 4px; }
+#main-game small, #campaign small { display: block; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; opacity: .7; }
+#main-game span { font-size: 22px; }
+#campaign span { font-size: 19px; }
+.hint { margin: 8px 0 0; font-size: 14px; color: var(--ink-soft); font-style: italic; }
+#highscores { margin: 0; padding: 0; list-style: none; counter-reset: hs; }
+#highscores li { display: flex; gap: 10px; padding: 6px 0; border-bottom: 1px dotted var(--rule); counter-increment: hs; font-variant-numeric: tabular-nums; }
+#highscores li::before { content: counter(hs) "."; width: 2.2em; color: var(--red); }
+#highscores .pts { flex: 1; }
+#highscores .meta { color: var(--ink-soft); font-size: 14px; }
+#highscores li.empty { color: var(--ink-soft); font-style: italic; border: 0; }
+#highscores li.empty::before { content: none; }
+.link-row { display: flex; justify-content: space-between; width: 100%; margin-top: 32px; padding: 12px 0;
+  border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-size: 18px; }
+.back { align-self: flex-start; margin-bottom: 20px; color: var(--ink-soft); }
+
+h2 { margin: 32px 0 6px; font-size: 12px; font-weight: 400; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-soft); }
+#levels { list-style: none; margin: 0; padding: 0; }
+#levels button { width: 100%; display: flex; align-items: baseline; gap: 10px; padding: 12px 0; text-align: left;
+  border-bottom: 1px dotted var(--rule); }
+#levels .num { width: 2.2em; color: var(--red); }
+#levels .name { flex: 1; font-size: 20px; }
+#levels .best { font-size: 15px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+#levels .best.passed { color: var(--ink); }
+#levels .best.passed::before { content: "✓ "; color: var(--red); }
+.colophon { margin-top: 32px; font-size: 12px; color: var(--ink-soft); font-style: italic; }
+
+/* ---------- game ---------- */
+.bar { display: flex; align-items: center; gap: 14px; padding: 10px 16px; background: var(--paper);
+  border-bottom: 1.5px solid var(--ink); z-index: 1; }
+#quit { font-size: 22px; color: var(--ink-soft); width: 28px; }
+.prompt { flex: 1; min-width: 0; }
+#progress { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); }
+#question { font-size: 24px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#question i { color: var(--red); }
+.score { font-size: 26px; font-variant-numeric: tabular-nums; }
+
+.mapwrap { flex: 1; min-height: 0; position: relative; }
+#map { width: 100%; height: 100%; display: block; background: var(--sea); touch-action: none; cursor: crosshair; }
+#map .other { fill: url(#hatch); stroke: #a89b80; stroke-width: .7; vector-effect: non-scaling-stroke; }
+#map .croatia { fill: var(--land); stroke: var(--land-stroke); stroke-width: 1.1; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+#map .grat { fill: none; stroke: #5a4a33; stroke-opacity: .18; stroke-width: .6; vector-effect: non-scaling-stroke; }
+#map .guess { stroke: var(--ink); stroke-linecap: round; }
+#map .target { fill: var(--red); }
+#map .target-ring { fill: none; stroke: var(--red); }
+#map .river { fill: none; stroke: var(--river); stroke-linecap: round; stroke-linejoin: round; }
+#map .area { fill: rgba(181, 54, 31, .2); stroke: var(--red); stroke-linejoin: round; }
+#map .link { stroke: var(--ink); stroke-opacity: .7; }
+#map .label { font-family: var(--serif); font-style: italic; fill: var(--ink); paint-order: stroke; stroke: var(--land); stroke-linejoin: round; }
+
+.scalebar { position: absolute; left: 14px; top: 12px; font-size: 11px; pointer-events: none; }
+.scalebar .line { height: 5px; border: 1px solid var(--ink); border-top: 0;
+  background: linear-gradient(90deg, var(--ink) 50%, transparent 50%); }
+.scalebar .labels { display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
+
+#reset-view { position: absolute; top: 10px; right: 12px; padding: 4px 10px; font-size: 13px;
+  background: var(--paper); border: 1px solid var(--ink); }
+
+#feedback { position: absolute; left: 10px; right: 10px; bottom: 10px; border: 1.5px solid var(--ink); }
+#feedback-text { flex: 1; font-size: 16px; }
+#feedback-text b { font-weight: 400; font-size: 20px; }
+#feedback-text .pts { color: var(--red); }
+#feedback-text .info { font-size: 14px; font-style: italic; color: var(--ink-soft); }
+
+/* ---------- result ---------- */
+#result { text-align: center; align-items: center; }
+#result-score { font-size: 96px; line-height: 1; margin-top: 24px; font-variant-numeric: tabular-nums; }
+#result-score small { font-size: 40px; color: var(--ink-soft); }
+.stamp { display: inline-block; margin: 20px 0 8px; padding: 6px 16px; border: 3px double var(--red); color: var(--red);
+  font-size: 22px; letter-spacing: .18em; text-transform: uppercase; transform: rotate(-4deg); }
+.stamp.fail { color: var(--ink-soft); border-color: var(--ink-soft); }
+#result-text { margin: 8px 0 28px; }
+#result .btn, #result .btn-outline { width: 100%; max-width: 360px; padding: 14px; font-size: 19px; margin-top: 10px; }
+#result-home { margin-top: 18px; color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }

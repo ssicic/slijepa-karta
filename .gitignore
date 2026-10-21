@@ -1,0 +1,10 @@
+# Raw Natural Earth downloads (~23 MB). Re-download with the commands in README.md.
+raw-data/
+node_modules/
+.DS_Store
+
+# Built app
+*.apk
+# Review images
+*-pregled.png
+*.apk.zip
