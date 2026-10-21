@@ -182,7 +182,7 @@
   function questionsFor(level) {
     const all = level.rivers ? level.rivers.filter(n => MAP_DATA.rivers[n]).map(name => ({ name, lines: MAP_DATA.rivers[name] }))
       : level.areas ? level.areas.filter(n => MAP_DATA.areas[n]).map(name => ({ name, lines: MAP_DATA.areas[name], area: true }))
-      : level.items.map(([name, lat, lon, info]) => ({ name, point: proj(lat, lon), info }));
+      : level.items.map(([name, lat, lon, info]) => ({ name, point: proj(lat, lon), info, ridge: level.ranges ? MAP_DATA.ranges[name] : null }));
     return run ? shuffle(all).slice(0, level.perRound) : shuffle(all);
   }
 
@@ -238,16 +238,22 @@
     if (!round || !round.reveal) return;
     const { q, guess, target } = round.reveal;
     const s = kmPerPixel();
+    // Mountain band: as wide as the hit zone, in real km (so it grows when you zoom in).
+    if (q.ridge) el('polyline', { points: q.ridge.join(' '), class: 'band', 'stroke-width': 2 * round.level.fullKm }, overlay);
     if (q.lines) for (const line of q.lines) el('polyline', { points: line.join(' '), class: q.area ? 'area' : 'river', 'stroke-width': (q.area ? 2 : 3) * s }, overlay);
     el('line', { x1: guess[0], y1: guess[1], x2: target[0], y2: target[1], class: 'link', 'stroke-width': 1 * s, 'stroke-dasharray': `${2 * s} ${3 * s}` }, overlay);
     // Guess: an ink cross. Answer: a red dot in a ring (the atlas symbol for a town).
     const c = 5 * s;
     el('path', { d: `M${guess[0] - c} ${guess[1] - c}L${guess[0] + c} ${guess[1] + c}M${guess[0] + c} ${guess[1] - c}L${guess[0] - c} ${guess[1] + c}`, class: 'guess', 'stroke-width': 2 * s }, overlay);
-    if (q.point) {
+    if (q.ridge) {
+      const [x, y] = q.point;
+      el('path', { d: `M${x} ${y - 7 * s}L${x + 6 * s} ${y + 5 * s}L${x - 6 * s} ${y + 5 * s}Z`, class: 'target' }, overlay);
+    } else if (q.point) {
       el('circle', { cx: target[0], cy: target[1], r: 6 * s, class: 'target-ring', 'stroke-width': 1.5 * s }, overlay);
       el('circle', { cx: target[0], cy: target[1], r: 2.5 * s, class: 'target' }, overlay);
     }
-    const label = el('text', { x: target[0] + 10 * s, y: target[1] + 5 * s, class: 'label', 'font-size': 16 * s, 'stroke-width': 3.5 * s }, overlay);
+    const at = q.ridge ? q.point : target; // mountains: label the peak
+    const label = el('text', { x: at[0] + 10 * s, y: at[1] + 5 * s, class: 'label', 'font-size': 16 * s, 'stroke-width': 3.5 * s }, overlay);
     label.textContent = q.name;
   }
 
@@ -256,7 +262,8 @@
     round.answered = true;
     const q = round.questions[round.i];
     const target = q.area && insideOutline(guess, q.lines) ? guess
-      : q.lines ? nearestOnRiver(guess, q.lines) : q.point;
+      : q.lines ? nearestOnRiver(guess, q.lines)
+      : q.ridge ? nearestOnRiver(guess, [q.ridge]) : q.point;
     const km = Math.hypot(guess[0] - target[0], guess[1] - target[1]);
     const pts = scoreFor(km);
     round.points += pts;

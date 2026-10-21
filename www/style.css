@@ -78,6 +78,7 @@ h2 { margin: 32px 0 6px; font-size: 12px; font-weight: 400; letter-spacing: .22e
 #map .target { fill: var(--red); }
 #map .target-ring { fill: none; stroke: var(--red); }
 #map .river { fill: none; stroke: var(--river); stroke-linecap: round; stroke-linejoin: round; }
+#map .band { fill: none; stroke: #7a5a2e; stroke-opacity: .4; stroke-linecap: round; stroke-linejoin: round; }
 #map .area { fill: rgba(181, 54, 31, .2); stroke: var(--red); stroke-linejoin: round; }
 #map .link { stroke: var(--ink); stroke-opacity: .7; }
 #map .label { font-family: var(--serif); font-style: italic; fill: var(--ink); paint-order: stroke; stroke: var(--land); stroke-linejoin: round; }
