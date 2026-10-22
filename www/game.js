@@ -61,7 +61,58 @@
     show('home');
   }
 
+  // ---------- online leaderboard ----------
+  let pendingScore = null;
+  function offerSubmit(score) {
+    pendingScore = Leaderboard.enabled && score.points > 0 ? score : null;
+    $('submit-score').classList.toggle('hidden', !pendingScore);
+    $('nickname').value = Leaderboard.lastNickname();
+    $('submit-msg').textContent = '';
+    $('submit-btn').disabled = false;
+  }
+  $('submit-score').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!pendingScore) return;
+    const { nick, error } = Leaderboard.checkNickname($('nickname').value);
+    if (error) { $('submit-msg').textContent = error; return; }
+    $('submit-btn').disabled = true;
+    $('submit-msg').textContent = 'Spremam…';
+    const result = await Leaderboard.submit({ nickname: nick, ...pendingScore });
+    pendingScore = null;
+    $('submit-msg').textContent = result === 'sent' ? 'Spremljeno na ljestvicu.' : 'Nema interneta. Rezultat će se poslati kad se spojiš.';
+  });
+
+  function scoreRow(name, points, meta, me) {
+    const li = document.createElement('li');
+    if (me) li.className = 'me';
+    for (const [cls, text] of [['who', name], ['pts', points], ['meta', meta]]) {
+      const span = document.createElement('span');
+      span.className = cls;
+      span.textContent = text; // textContent: nicknames come from other players
+      li.appendChild(span);
+    }
+    return li;
+  }
+
+  async function renderOnline() {
+    $('online-section').classList.toggle('hidden', !Leaderboard.enabled);
+    if (!Leaderboard.enabled) return;
+    const list = $('online-scores');
+    $('online-status').textContent = 'Učitavam…';
+    list.innerHTML = '';
+    try {
+      await Leaderboard.flush();
+      const rows = await Leaderboard.top(20);
+      $('online-status').textContent = rows.length ? '' : 'Još nitko nije na ljestvici. Budi prvi!';
+      const mine = Leaderboard.lastNickname();
+      for (const r of rows) list.appendChild(scoreRow(r.nickname, r.points, r.finished ? 'sve' : 'do ' + ROMAN[r.reached], r.nickname === mine));
+    } catch {
+      $('online-status').textContent = 'Ljestvica nije dostupna bez interneta.';
+    }
+  }
+
   function renderScores() {
+    renderOnline();
     const hs = progress.highscores;
     $('highscores').innerHTML = hs.length
       ? hs.map(h => `<li><span class="pts">${h.points} bodova</span><span class="meta">${h.finished ? 'sve razine' : 'do razine ' + ROMAN[h.reached]} · ${h.date}</span></li>`).join('')
@@ -189,7 +240,7 @@
   // Main game: all levels back to back, total points carried over.
   let run = null;
   function startMainGame() {
-    run = { total: 0 };
+    run = { total: 0, start: Date.now() };
     startRound(0);
   }
 
@@ -342,7 +393,10 @@
     $('result-retry').textContent = 'Nova igra';
     $('result-retry').className = 'btn';
     $('result-retry').onclick = startMainGame;
-    if (out || finished) run = null;
+    if (out || finished) {
+      offerSubmit({ points: run.total, reached: levelIndex, finished, durationS: (Date.now() - run.start) / 1000 });
+      run = null;
+    }
     show('result');
   }
 
@@ -401,4 +455,5 @@
 
   drawMap();
   renderHome();
+  Leaderboard.flush().catch(() => {});
 })();

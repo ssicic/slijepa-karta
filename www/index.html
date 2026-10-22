@@ -17,7 +17,7 @@
     <h2>Vježba po razinama</h2>
     <button id="campaign"></button>
     <ul id="levels"></ul>
-    <button id="open-scores" class="link-row">Najbolji rezultati <span>→</span></button>
+    <button id="open-scores" class="link-row">Ljestvica <span>→</span></button>
     <p class="colophon">Podaci o karti: Natural Earth i © suradnici OpenStreetMapa (ODbL). Za prolaz razine treba 50 %.</p>
   </main>
 
@@ -44,10 +44,15 @@
   <main id="scores" class="screen hidden">
     <button id="scores-back" class="back">← Natrag</button>
     <div class="eyebrow">Glavna igra</div>
-    <h1>Najbolji rezultati</h1>
-    <p class="sub">Spremljeno na ovom uređaju.</p>
+    <h1>Ljestvica</h1>
     <div class="rule"></div>
-    <ol id="highscores"></ol>
+    <section id="online-section">
+      <h2>Svi igrači</h2>
+      <p id="online-status" class="hint"></p>
+      <ol id="online-scores" class="scorelist"></ol>
+    </section>
+    <h2>Na ovom uređaju</h2>
+    <ol id="highscores" class="scorelist"></ol>
   </main>
 
   <main id="result" class="screen hidden">
@@ -55,11 +60,21 @@
     <div id="result-score"></div>
     <div id="result-stamp" class="stamp"></div>
     <p id="result-text" class="sub"></p>
+    <form id="submit-score" class="hidden" autocomplete="off">
+      <label for="nickname">Upiši se na ljestvicu</label>
+      <div class="row">
+        <input id="nickname" maxlength="16" placeholder="Nadimak" enterkeyhint="send">
+        <button id="submit-btn" class="btn" type="submit">Spremi</button>
+      </div>
+      <p id="submit-msg" class="hint"></p>
+    </form>
     <button id="result-next" class="btn"></button>
     <button id="result-retry" class="btn-outline"></button>
     <button id="result-home">Natrag na sadržaj</button>
   </main>
 
+  <script src="config.js"></script>
+  <script src="leaderboard.js"></script>
   <script src="data.js"></script>
   <script src="levels.js"></script>
   <script src="game.js"></script>

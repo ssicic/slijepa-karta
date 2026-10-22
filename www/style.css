@@ -37,13 +37,23 @@ h1 { margin: 6px 0 0; font-size: 46px; line-height: 1; font-weight: 400; letter-
 #main-game span { font-size: 22px; }
 #campaign span { font-size: 19px; }
 .hint { margin: 8px 0 0; font-size: 14px; color: var(--ink-soft); font-style: italic; }
-#highscores { margin: 0; padding: 0; list-style: none; counter-reset: hs; }
-#highscores li { display: flex; gap: 10px; padding: 6px 0; border-bottom: 1px dotted var(--rule); counter-increment: hs; font-variant-numeric: tabular-nums; }
-#highscores li::before { content: counter(hs) "."; width: 2.2em; color: var(--red); }
-#highscores .pts { flex: 1; }
-#highscores .meta { color: var(--ink-soft); font-size: 14px; }
-#highscores li.empty { color: var(--ink-soft); font-style: italic; border: 0; }
-#highscores li.empty::before { content: none; }
+
+.scorelist { margin: 0; padding: 0; list-style: none; counter-reset: hs; }
+.scorelist li { display: flex; align-items: baseline; gap: 10px; padding: 7px 0; border-bottom: 1px dotted var(--rule); counter-increment: hs; font-variant-numeric: tabular-nums; }
+.scorelist li::before { content: counter(hs) "."; width: 2.2em; color: var(--red); }
+.scorelist .who { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.scorelist .pts { font-weight: 600; }
+.scorelist .meta { color: var(--ink-soft); font-size: 13px; }
+.scorelist li.empty { color: var(--ink-soft); font-style: italic; border: 0; }
+.scorelist li.empty::before { content: none; }
+.scorelist li.me { background: rgba(181, 54, 31, .08); }
+
+#submit-score { width: 100%; max-width: 360px; margin: 0 0 18px; text-align: left; }
+#submit-score label { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); }
+#submit-score .row { display: flex; gap: 8px; margin-top: 6px; }
+#nickname { flex: 1; min-width: 0; font: inherit; font-size: 18px; padding: 10px 12px; border: 1.5px solid var(--ink); background: #fffaf0; color: var(--ink); border-radius: 0; }
+#submit-score .btn { margin: 0; width: auto; }
+#submit-msg { min-height: 1.4em; }
 .link-row { display: flex; justify-content: space-between; width: 100%; margin-top: 32px; padding: 12px 0;
   border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-size: 18px; }
 .back { align-self: flex-start; margin-bottom: 20px; color: var(--ink-soft); }
