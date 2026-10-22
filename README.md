@@ -27,6 +27,17 @@ for f in ne_10m_admin_0_countries ne_10m_rivers_lake_centerlines ne_10m_rivers_e
 cd .. && node scripts/build-map.mjs
 ```
 
+## Checks and deployment
+
+```bash
+npm test
+```
+
+checks every place against the map data. On GitHub, `.github/workflows/ci.yml` runs the
+checks on every push, builds the APK (download it from the run's Artifacts), and publishes
+`www/` to GitHub Pages when `main` passes. Pushing a tag like `v1.0.0` also creates a
+release with the APK attached.
+
 ## Android APK
 
 Needs Java 21 and the Android SDK (see `android/local.properties`).
