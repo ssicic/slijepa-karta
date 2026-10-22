@@ -408,7 +408,7 @@
   }
 
   // ---------- wiring ----------
-  // One finger: drag to pan, tap (finger barely moved) to guess. Two fingers: pinch to zoom.
+  // One finger: drag to pan, tap (finger barely moved) to guess. Two fingers: pinch to zoom and drag.
   const pointers = new Map();
   let gesture = null;
   const pts = () => [...pointers.values()];
@@ -436,8 +436,11 @@
         setView({ ...gesture.view, x: gesture.view.x - dx * s, y: gesture.view.y - dy * s });
       }
     } else if (p.length === 2 && gesture.dist) {
+      // Zoom and pan together: the map point that started under the fingers stays under them.
       const d = Math.hypot(p[0][0] - p[1][0], p[0][1] - p[1][1]);
       zoomAt(gesture.mid, gesture.dist / d, gesture.view);
+      const now = svgPoint([(p[0][0] + p[1][0]) / 2, (p[0][1] + p[1][1]) / 2]);
+      setView({ ...view, x: view.x + gesture.mid[0] - now[0], y: view.y + gesture.mid[1] - now[1] });
     }
   });
   function endPointer(e) {
