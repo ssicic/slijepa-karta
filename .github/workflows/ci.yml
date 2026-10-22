@@ -24,7 +24,7 @@ jobs:
       - name: JavaScript parses
         run: for f in www/*.js scripts/*.mjs tests/*.mjs; do node --check "$f"; done
       - name: Data checks
-        run: node --test tests/
+        run: node --test tests/*.test.mjs
       - name: No AI tool mentions in the repo
         run: |
           if git grep -nIiE 'cl[a]ude|anthr[o]pic' -- . ':!package-lock.json'; then
