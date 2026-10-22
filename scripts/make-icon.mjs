@@ -36,6 +36,10 @@ const png = (s, file) => sharp(Buffer.from(s)).png().toFile(path.join(out, file)
 await png(svg({ fill: 0.78, background: true }), 'icon-only.png');
 await png(svg({ fill: 0.56, background: false }), 'icon-foreground.png');
 await png(`<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024"><rect width="1024" height="1024" fill="${PAPER}"/></svg>`, 'icon-background.png');
+// Launch screen (used for iPhone): paper background with the map small in the middle.
+const splash = svg({ fill: 0.78, background: true }).replace('width="1024" height="1024" viewBox="0 0 1024 1024"', 'width="2732" height="2732" viewBox="-854 -854 2732 2732"').replace('<rect width="1024" height="1024"', '<rect x="-854" y="-854" width="2732" height="2732"');
+await png(splash, 'splash.png');
+await png(splash, 'splash-dark.png');
 console.log('icons written to assets/');
 
 // Android adaptive icon as a vector (sharp at any size, also used on the launch screen).
