@@ -50,9 +50,9 @@ h1 { margin: 6px 0 0; font-size: 46px; line-height: 1; font-weight: 400; letter-
 
 #submit-score { width: 100%; max-width: 360px; margin: 0 0 18px; text-align: left; }
 #submit-score label { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); }
-#submit-score .row { display: flex; gap: 8px; margin-top: 6px; }
-#nickname { flex: 1; min-width: 0; font: inherit; font-size: 18px; padding: 10px 12px; border: 1.5px solid var(--ink); background: #fffaf0; color: var(--ink); border-radius: 0; }
-#submit-score .btn { margin: 0; width: auto; }
+#submit-score .row { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+#nickname { width: 100%; font: inherit; font-size: 20px; padding: 14px; border: 1.5px solid var(--ink); background: #fffaf0; color: var(--ink); border-radius: 0; }
+#result #submit-score .btn { margin: 0; max-width: none; }
 #submit-msg { min-height: 1.4em; }
 .link-row { display: flex; justify-content: space-between; width: 100%; margin-top: 32px; padding: 12px 0;
   border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-size: 18px; }

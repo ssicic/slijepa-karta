@@ -66,6 +66,8 @@
   function offerSubmit(score) {
     pendingScore = Leaderboard.enabled && score.points > 0 ? score : null;
     $('submit-score').classList.toggle('hidden', !pendingScore);
+    $('submit-score').querySelector('.row').classList.remove('hidden');
+    $('submit-score').querySelector('label').classList.remove('hidden');
     $('nickname').value = Leaderboard.lastNickname();
     $('submit-msg').textContent = '';
     $('submit-btn').disabled = false;
@@ -77,9 +79,14 @@
     if (error) { $('submit-msg').textContent = error; return; }
     $('submit-btn').disabled = true;
     $('submit-msg').textContent = 'Spremam…';
-    const result = await Leaderboard.submit({ nickname: nick, ...pendingScore });
-    pendingScore = null;
-    $('submit-msg').textContent = result === 'sent' ? 'Spremljeno na ljestvicu.' : 'Nema interneta. Rezultat će se poslati kad se spojiš.';
+    const score = pendingScore;
+    pendingScore = null; // one save per game
+    const result = await Leaderboard.submit({ nickname: nick, ...score });
+    $('submit-score').querySelector('.row').classList.add('hidden');
+    $('submit-score').querySelector('label').classList.add('hidden');
+    $('submit-msg').textContent = result === 'sent'
+      ? `✓ Spremljeno na ljestvicu kao „${nick}“.`
+      : 'Nema interneta. Rezultat će se poslati kad se spojiš.';
   });
 
   function scoreRow(name, points, meta, me) {
