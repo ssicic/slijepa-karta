@@ -239,7 +239,7 @@
 
   function questionsFor(level) {
     const all = level.rivers ? level.rivers.filter(n => MAP_DATA.rivers[n]).map(name => ({ name, lines: MAP_DATA.rivers[name] }))
-      : level.areas ? level.areas.filter(n => MAP_DATA.areas[n]).map(name => ({ name, lines: MAP_DATA.areas[name], area: true }))
+      : level.areas ? level.areas.filter(n => MAP_DATA[level.areaSet || 'areas'][n]).map(name => ({ name, lines: MAP_DATA[level.areaSet || 'areas'][name], area: true }))
       : level.items.map(([name, lat, lon, info]) => ({ name, point: proj(lat, lon), info, ridge: level.ranges ? MAP_DATA.ranges[name] : null }));
     return run ? shuffle(all).slice(0, level.perRound) : shuffle(all);
   }

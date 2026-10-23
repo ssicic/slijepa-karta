@@ -8,3 +8,5 @@ node_modules/
 # Review images
 *-pregled.png
 *.apk.zip
+# iOS build output
+ios/build/

@@ -72,10 +72,10 @@ test('every river has map data of a sensible length', () => {
   }
 });
 
-test('every island has a closed outline', () => {
+test('every island and national park has a closed outline', () => {
   for (const l of levels) for (const name of l.areas || []) {
-    const pieces = map.areas[name];
-    assert.ok(pieces?.length, `no outline for island ${name}`);
+    const pieces = map[l.areaSet || 'areas'][name];
+    assert.ok(pieces?.length, `no outline for ${name}`);
     for (const r of pieces) assert.deepEqual(r[0], r[r.length - 1], `${name} outline is not closed`);
   }
 });

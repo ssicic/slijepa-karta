@@ -46,12 +46,9 @@ window.LEVELS = [
     ],
   },
   {
-    id: 'national-parks', title: 'Nacionalni parkovi', perRound: 5, fullKm: 8, zeroKm: 70,
-    items: [
-      ['Plitvička jezera', 44.880, 15.616], ['Krka', 43.805, 15.966], ['Kornati', 43.810, 15.290],
-      ['Mljet', 42.775, 17.370], ['Brijuni', 44.913, 13.765], ['Paklenica', 44.360, 15.470],
-      ['Risnjak', 45.430, 14.630], ['Sjeverni Velebit', 44.760, 15.020],
-    ],
+    // Official park borders from OpenStreetMap (MAP_DATA.parks); a tap inside the park is a hit.
+    id: 'national-parks', title: 'Nacionalni parkovi', perRound: 5, fullKm: 1, zeroKm: 50, areaSet: 'parks',
+    areas: ['Plitvička jezera', 'Krka', 'Kornati', 'Mljet', 'Brijuni', 'Paklenica', 'Risnjak', 'Sjeverni Velebit'],
   },
   {
     // Tapping anywhere on the island counts as a hit.
